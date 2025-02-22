@@ -1,0 +1,4 @@
+import math
+
+def calcular_area_radio(radio):
+    return math.pi * radio ** 2
