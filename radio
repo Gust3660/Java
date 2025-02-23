@@ -2,3 +2,5 @@ import math
 
 def calcular_area_radio(radio):
     return math.pi * radio ** 2
+radio = float(input("Introduce el radio del círculo: "))
+print(f"El área del círculo es: {calcular_area_radio(radio)}")
