@@ -1,0 +1,200 @@
+import tkinter as tk
+from tkinter import simpledialog, messagebox
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+class VectorCalculator(tk.Tk):
+    def _init_(self):
+        super()._init_()
+        self.title("Calculadora de Vectores")
+        self.resizable(False, False)
+
+        window_width = 800
+        window_height = 600
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        x_coordinate = int((screen_width/2) - (window_width/2))
+        y_coordinate = int((screen_height/2) - (window_height/2))
+
+        self.geometry(f"{window_width}x{window_height}+{x_coordinate}+{y_coordinate}")
+        self.protocol("WM_DELETE_WINDOW", self.disable_close)
+
+        self.configure(bg='light blue')  # Fondo azul claro
+
+        self.figure = plt.Figure(figsize=(6, 4), dpi=100)
+        self.canvas = FigureCanvasTkAgg(self.figure, self)
+        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        self.watermark_label = tk.Label(self, text="ISIC", font=("Arial", 10), fg="gray", anchor="se", bg='light blue')
+        self.watermark_label.place(relx=1.0, rely=1.0, x=-10, y=-10, anchor="se")
+
+        button_width = 20
+        button_height = 2
+        button_bg = 'light salmon'  # Naranja claro
+
+        self.menu_buttons = []
+
+        suma_resta_btn = tk.Button(self, text="Suma y Resta de Vectores", command=self.sum_and_subtract_vectors, width=button_width, height=button_height, bg=button_bg)
+        suma_resta_btn.place(x=100, y=100)
+        self.menu_buttons.append(suma_resta_btn)
+
+        producto_punto_cruz_btn = tk.Button(self, text="Producto Punto y Cruz", command=self.dot_and_cross_product, width=button_width, height=button_height, bg=button_bg)
+        producto_punto_cruz_btn.place(x=500, y=100)
+        self.menu_buttons.append(producto_punto_cruz_btn)
+
+        curvas_parametricas_btn = tk.Button(self, text="Graficar Curvas Paramétricas", command=self.plot_parametric_curves, width=button_width, height=button_height, bg=button_bg)
+        curvas_parametricas_btn.place(x=100, y=250)
+        self.menu_buttons.append(curvas_parametricas_btn)
+
+        curvas_polares_btn = tk.Button(self, text="Graficar Curvas Polares", command=self.plot_polar_curves, width=button_width, height=button_height, bg=button_bg)
+        curvas_polares_btn.place(x=500, y=250)
+        self.menu_buttons.append(curvas_polares_btn)
+
+        longitud_arco_btn = tk.Button(self, text="Calcular Longitud de Arco", command=self.calculate_arc_length, width=button_width, height=button_height, bg=button_bg)
+        longitud_arco_btn.place(x=300, y=400)
+        self.menu_buttons.append(longitud_arco_btn)
+
+        exit_button_main = tk.Button(self, text="Salir", command=self.destroy, width=button_width, height=button_height, bg=button_bg)
+        exit_button_main.place(x=300, y=500)
+        self.menu_buttons.append(exit_button_main)
+
+        self.exit_button = tk.Button(self, text="Regresar al Menú Principal", command=self.on_exit, width=button_width, height=button_height, bg=button_bg)
+
+    def disable_close(self):
+        pass
+
+    def on_exit(self):
+        self.show_menu_buttons()
+        self.figure.clf()
+        self.canvas.draw()
+        self.watermark_label.lift()
+
+    def show_menu_buttons(self):
+        for btn in self.menu_buttons:
+            btn.place(x=btn.winfo_x(), y=btn.winfo_y())
+        self.exit_button.place_forget()
+        self.watermark_label.lift()
+
+    def hide_menu_buttons(self):
+        for btn in self.menu_buttons:
+            btn.place_forget()
+        self.exit_button.place(x=10, y=10)
+        self.watermark_label.lift()
+
+    def get_vector_input(self, prompt):
+        while True:
+            vector_str = simpledialog.askstring(prompt, f"Ingrese el {prompt} (ejemplo: 1,2,3):")
+            try:
+                vector = np.array([float(x) for x in vector_str.split(',')])
+                if len(vector) != 3:
+                    raise ValueError
+                return vector
+            except ValueError:
+                messagebox.showerror("Error", "Por favor ingrese un vector válido con 3 componentes separados por comas.")
+
+    def sum_and_subtract_vectors(self):
+        vector1 = self.get_vector_input("Vector 1")
+        vector2 = self.get_vector_input("Vector 2")
+        suma = vector1 + vector2
+        resta = vector1 - vector2
+
+        result_str = f"Suma: {suma}\nResta: {resta}"
+        messagebox.showinfo("Resultados", result_str)
+        self.on_exit()
+
+    def dot_and_cross_product(self):
+        self.hide_menu_buttons()
+
+        vector1 = self.get_vector_input("Vector 1")
+        vector2 = self.get_vector_input("Vector 2")
+        producto_punto = np.dot(vector1, vector2)
+        producto_cruz = np.cross(vector1, vector2)
+
+        result_str = f"Producto Punto: {producto_punto}\nProducto Cruz: {producto_cruz}"
+        messagebox.showinfo("Resultados", result_str)
+
+        self.figure.clf()
+        ax = self.figure.add_subplot(111)
+        ax.quiver(0, 0, vector1[0], vector1[1], angles='xy', scale_units='xy', scale=1, color='r', label='Vector 1')
+        ax.quiver(0, 0, vector2[0], vector2[1], angles='xy', scale_units='xy', scale=1, color='b', label='Vector 2')
+        ax.quiver(0, 0, producto_cruz[0], producto_cruz[1], angles='xy', scale_units='xy', scale=1, color='g', label='Producto Cruz')
+        ax.set_xlim([-10, 10])
+        ax.set_ylim([-10, 10])
+        ax.legend()
+        ax.grid()
+        self.canvas.draw()
+
+    def plot_parametric_curves(self):
+        self.hide_menu_buttons()
+
+        while True:
+            t_str = simpledialog.askstring("Rango t", "Ingrese el rango de t (ejemplo: 0,2*pi):")
+            try:
+                t_start, t_end = [eval(x) for x in t_str.split(',')]
+                t = np.linspace(t_start, t_end, 100)
+                x = np.cos(t)
+                y = np.sin(t)
+                break
+            except ValueError:
+                messagebox.showerror("Error", "Por favor ingrese un rango válido de t.")
+
+        self.figure.clf()
+        ax = self.figure.add_subplot(111)
+        ax.plot(x, y, label='Curva Paramétrica')
+        ax.legend()
+        ax.grid()
+        self.canvas.draw()
+
+    def plot_polar_curves(self):
+        self.hide_menu_buttons()
+
+        while True:
+            theta_str = simpledialog.askstring("Rango theta", "Ingrese el rango de theta (ejemplo: 0,2*pi):")
+            try:
+                theta_start, theta_end = [eval(x) for x in theta_str.split(',')]
+                theta = np.linspace(theta_start, theta_end, 100)
+                r = 1 + np.sin(theta)
+                break
+            except ValueError:
+                messagebox.showerror("Error", "Por favor ingrese un rango válido de theta.")
+
+        self.figure.clf()
+        ax = self.figure.add_subplot(111, polar=True)
+        ax.plot(theta, r, label='Curva Polar')
+        ax.legend()
+        ax.grid()
+        self.canvas.draw()
+
+    def calculate_arc_length(self):
+        self.hide_menu_buttons()
+
+        while True:
+            t_str = simpledialog.askstring("Rango t", "Ingrese el rango de t (ejemplo: 0,2*pi):")
+            try:
+                t_start, t_end = [eval(x) for x in t_str.split(',')]
+                t = np.linspace(t_start, t_end, 100)
+                x = np.cos(t)
+                y = np.sin(t)
+                dx = np.gradient(x, t)
+                dy = np.gradient(y, t)
+                integrand = np.sqrt(dx*2 + dy*2)
+                arc_length = np.trapz(integrand, t)
+                break
+            except ValueError:
+                messagebox.showerror("Error", "Por favor ingrese un rango válido de t.")
+
+        result_str = f"Longitud de Arco: {arc_length}"
+        messagebox.showinfo("Resultado", result_str)
+
+        self.figure.clf()
+        ax = self.figure.add_subplot(111)
+        ax.plot(x, y, label='Curva Paramétrica')
+        ax.legend()
+        ax.grid()
+        self.canvas.draw()
+
+if _name_ == "_main_":
+    app = VectorCalculator()
+    app.mainloop()
