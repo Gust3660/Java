@@ -1,0 +1,19 @@
+public class Cliente {
+    private String nombre;
+    private String tipoMembresia;
+    private int antiguedad;
+
+    public Cliente(String nombre, String tipoMembresia, int antiguedad) {
+        this.nombre = nombre;
+        this.tipoMembresia = tipoMembresia;
+        this.antiguedad = antiguedad;
+    }
+
+    public String getTipoMembresia() {
+        return tipoMembresia;
+    }
+
+    public int getAntiguedad() {
+        return antiguedad;
+    }
+}
