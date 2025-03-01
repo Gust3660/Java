@@ -1,0 +1,27 @@
+public class Venta {
+    private Cliente cliente;
+    private Producto producto;
+
+    public Venta(Cliente cliente, Producto producto) {
+        this.cliente = cliente;
+        this.producto = producto;
+    }
+
+    public double calcularDescuento() {
+        double descuento = 0.0;
+
+        // Aplicar descuentos según tipo de membresía
+        if (cliente.getTipoMembresia().equals("Gold")) {
+            descuento += 0.10; // 10% de descuento
+        } else if (cliente.getTipoMembresia().equals("Silver")) {
+            descuento += 0.05; // 5% de descuento
+        }
+
+        // Aplicar descuentos según antigüedad
+        if (cliente.getAntiguedad() > 5) {
+            descuento += 0.10; // 10% de descuento adicional por antigüedad
+        }
+
+        return producto.getPrecio() * (1 - descuento);
+    }
+}
