@@ -1,0 +1,11 @@
+public class SistemaVentas {
+    public static void main(String[] args) {
+        Cliente cliente = new Cliente("Juan Perez", "Gold", 6);
+        Producto producto = new Producto("Laptop", 1000.00);
+
+        Venta venta = new Venta(cliente, producto);
+        double precioFinal = venta.calcularDescuento();
+
+        System.out.println("El precio final después del descuento es: $" + precioFinal);
+    }
+}
