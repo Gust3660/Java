@@ -1,0 +1,82 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Calculadora extends JFrame implements ActionListener {
+    private JTextField pantalla;
+    private String operador;
+    private double primerNumero, segundoNumero, resultado;
+
+    public Calculadora() {
+        setTitle("Calculadora Básica");
+        setSize(400, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        pantalla = new JTextField();
+        pantalla.setEditable(false);
+        pantalla.setHorizontalAlignment(JTextField.RIGHT);
+        pantalla.setFont(new Font("Arial", Font.BOLD, 24));
+        add(pantalla, BorderLayout.NORTH);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 4, 10, 10));
+
+        String[] botones = {
+            "7", "8", "9", "/",
+            "4", "5", "6", "*",
+            "1", "2", "3", "-",
+            "0", ".", "=", "+"
+        };
+
+        for (String text : botones) {
+            JButton button = new JButton(text);
+            button.setFont(new Font("Arial", Font.BOLD, 24));
+            button.addActionListener(this);
+            panel.add(button);
+        }
+
+        add(panel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String comando = e.getActionCommand();
+
+        if (comando.charAt(0) >= '0' && comando.charAt(0) <= '9' || comando.equals(".")) {
+            pantalla.setText(pantalla.getText() + comando);
+        } else if (comando.equals("=")) {
+            segundoNumero = Double.parseDouble(pantalla.getText());
+
+            switch (operador) {
+                case "+":
+                    resultado = primerNumero + segundoNumero;
+                    break;
+                case "-":
+                    resultado = primerNumero - segundoNumero;
+                    break;
+                case "*":
+                    resultado = primerNumero * segundoNumero;
+                    break;
+                case "/":
+                    resultado = primerNumero / segundoNumero;
+                    break;
+            }
+
+            pantalla.setText(String.valueOf(resultado));
+            primerNumero = resultado;
+        } else {
+            if (!pantalla.getText().isEmpty()) {
+                primerNumero = Double.parseDouble(pantalla.getText());
+                operador = comando;
+                pantalla.setText("");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new Calculadora();
+    }
+}
