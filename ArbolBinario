@@ -1,0 +1,68 @@
+// Clase para representar un nodo en el árbol
+class Nodo {
+    int valor;
+    Nodo izquierda, derecha;
+
+    Nodo(int valor) {
+        this.valor = valor;
+        izquierda = derecha = null;
+    }
+}
+
+// Clase para el árbol binario
+class ArbolBinario {
+    Nodo raiz;
+
+    // Método para agregar un nodo al árbol
+    void agregar(int valor) {
+        raiz = agregarRecursivo(raiz, valor);
+    }
+
+    Nodo agregarRecursivo(Nodo actual, int valor) {
+        if (actual == null) {
+            return new Nodo(valor);
+        }
+
+        if (valor < actual.valor) {
+            actual.izquierda = agregarRecursivo(actual.izquierda, valor);
+        } else if (valor > actual.valor) {
+            actual.derecha = agregarRecursivo(actual.derecha, valor);
+        }
+
+        return actual;
+    }
+
+    // Método para recorrer el árbol en orden
+    void recorrerEnOrden(Nodo nodo) {
+        if (nodo != null) {
+            recorrerEnOrden(nodo.izquierda);
+            System.out.print(nodo.valor + " ");
+            recorrerEnOrden(nodo.derecha);
+        }
+    }
+
+    // Método para iniciar el recorrido en orden desde la raíz
+    void recorrerEnOrden() {
+        recorrerEnOrden(raiz);
+    }
+}
+
+// Clase principal para ejecutar el programa
+public class Main {
+    public static void main(String[] args) {
+        ArbolBinario arbol = new ArbolBinario();
+
+        // Agregar valores al árbol
+        arbol.agregar(6);
+        arbol.agregar(4);
+        arbol.agregar(8);
+        arbol.agregar(3);
+        arbol.agregar(5);
+        arbol.agregar(7);
+        arbol.agregar(9);
+
+        // Recorrer el árbol en orden
+        System.out.println("Recorrido en orden:");
+        arbol.recorrerEnOrden();
+    }
+}
