@@ -1,0 +1,59 @@
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.awt.image.BufferedImage;
+
+public class QRCodeGenerator {
+
+    // Método para generar un código QR
+    public static void generateQRCode(String data, String filePath, int width, int height) throws Exception {
+        // Configuraciones para el QR
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+
+        // Crear el QR con la información proporcionada
+        BitMatrix matrix = new com.google.zxing.qrcode.QRCodeWriter().encode(
+            data,
+            BarcodeFormat.QR_CODE,
+            width,
+            height,
+            hints
+        );
+
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(matrix, "PNG", path);
+
+        System.out.println("Código QR generado en: " + filePath);
+    }
+
+    public static void main(String[] args) {
+        try {
+            // Datos binarios para el código QR
+            String binaryData = "101010001010111010101000"; // Ejemplo de binario
+            String filePath = "binary_qr.png"; // Archivo donde se guarda el QR
+            int width = 300; // Ancho del QR
+            int height = 300; // Altura del QR
+
+            // Generar QR
+            generateQRCode(binaryData, filePath, width, height);
+
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error: " + e.getMessage());
+        }
+    }
+}
