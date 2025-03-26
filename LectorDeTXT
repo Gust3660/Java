@@ -1,0 +1,21 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LectorDeTxt {
+    public static void main(String[] args) {
+        // Ruta del archivo .txt que deseas leer
+        String rutaArchivo = "archivo.txt";
+
+        // Intentamos leer el archivo
+        try (BufferedReader lector = new BufferedReader(new FileReader(rutaArchivo))) {
+            String linea;
+            // Leer línea por línea
+            while ((linea = lector.readLine()) != null) {
+                System.out.println(linea);
+            }
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo: " + e.getMessage());
+        }
+    }
+}
