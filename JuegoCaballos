@@ -1,0 +1,73 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class JuegoCaballos extends JFrame {
+    private JPanel panelTablero;
+    private JButton[][] botones;
+    private int filaActual = 0;
+    private int columnaActual = 0;
+
+    public JuegoCaballos() {
+        setTitle("Juego de los Caballos");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        panelTablero = new JPanel(new GridLayout(8, 8));
+        botones = new JButton[8][8];
+        inicializarTablero();
+        add(panelTablero);
+    }
+
+    private void inicializarTablero() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                JButton boton = new JButton();
+                boton.setBackground((i + j) % 2 == 0 ? Color.WHITE : Color.GRAY);
+                boton.addActionListener(new MoverCaballo(i, j));
+                botones[i][j] = boton;
+                panelTablero.add(boton);
+            }
+        }
+        botones[filaActual][columnaActual].setBackground(Color.RED); // Posición inicial
+    }
+
+    private class MoverCaballo implements ActionListener {
+        private int filaDestino;
+        private int columnaDestino;
+
+        public MoverCaballo(int fila, int columna) {
+            this.filaDestino = fila;
+            this.columnaDestino = columna;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (esMovimientoValido(filaDestino, columnaDestino)) {
+                botones[filaActual][columnaActual].setBackground(
+                        (filaActual + columnaActual) % 2 == 0 ? Color.WHITE : Color.GRAY);
+                filaActual = filaDestino;
+                columnaActual = columnaDestino;
+                botones[filaActual][columnaActual].setBackground(Color.RED);
+            } else {
+                JOptionPane.showMessageDialog(null, "Movimiento inválido. ¡Inténtalo de nuevo!");
+            }
+        }
+
+        private boolean esMovimientoValido(int fila, int columna) {
+            int diferenciaFila = Math.abs(fila - filaActual);
+            int diferenciaColumna = Math.abs(columna - columnaActual);
+            return (diferenciaFila == 2 && diferenciaColumna == 1) ||
+                   (diferenciaFila == 1 && diferenciaColumna == 2);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JuegoCaballos juego = new JuegoCaballos();
+            juego.setVisible(true();
+        });
+    }
+}
