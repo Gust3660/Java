@@ -1,0 +1,19 @@
+import java.util.Scanner;
+
+public class NumeroParAImpar {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Introduce un número par: ");
+        int numero = scanner.nextInt();
+
+        if (numero % 2 == 0) {
+            numero += 1;
+            System.out.println("El número impar resultante es: " + numero);
+        } else {
+            System.out.println("El número introducido ya es impar.");
+        }
+
+        scanner.close();
+    }
+}
