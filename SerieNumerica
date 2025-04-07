@@ -1,0 +1,23 @@
+import java.util.Scanner;
+
+public class SerieNumerica {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicitar el número inicial y final al usuario
+        System.out.print("Introduce el número inicial: ");
+        int numeroInicial = scanner.nextInt();
+
+        System.out.print("Introduce el número final: ");
+        int numeroFinal = scanner.nextInt();
+
+        System.out.println("Serie numérica:");
+
+        // Generar la serie numérica
+        for (int i = numeroInicial; i <= numeroFinal; i++) {
+            System.out.print(i + " ");
+        }
+
+        scanner.close();
+    }
+}
