@@ -1,0 +1,72 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SolucionadorEcuacion {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Solucionador de Ecuaciones de Segundo Grado");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel labelA = new JLabel("Coeficiente a:");
+        labelA.setBounds(20, 20, 100, 30);
+        frame.add(labelA);
+
+        JTextField textA = new JTextField();
+        textA.setBounds(120, 20, 100, 30);
+        frame.add(textA);
+
+        JLabel labelB = new JLabel("Coeficiente b:");
+        labelB.setBounds(20, 60, 100, 30);
+        frame.add(labelB);
+
+        JTextField textB = new JTextField();
+        textB.setBounds(120, 60, 100, 30);
+        frame.add(textB);
+
+        JLabel labelC = new JLabel("Coeficiente c:");
+        labelC.setBounds(20, 100, 100, 30);
+        frame.add(labelC);
+
+        JTextField textC = new JTextField();
+        textC.setBounds(120, 100, 100, 30);
+        frame.add(textC);
+
+        JButton solveButton = new JButton("Resolver");
+        solveButton.setBounds(20, 140, 200, 30);
+        frame.add(solveButton);
+
+        JTextArea resultArea = new JTextArea();
+        resultArea.setBounds(20, 180, 350, 70);
+        resultArea.setEditable(false);
+        frame.add(resultArea);
+
+        solveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double a = Double.parseDouble(textA.getText());
+                    double b = Double.parseDouble(textB.getText());
+                    double c = Double.parseDouble(textC.getText());
+
+                    double discriminant = b * b - 4 * a * c;
+                    if (discriminant < 0) {
+                        resultArea.setText("No hay soluciones reales.");
+                    } else if (discriminant == 0) {
+                        double root = -b / (2 * a);
+                        resultArea.setText("Una solución real: " + root);
+                    } else {
+                        double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                        double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                        resultArea.setText("Dos soluciones reales:\nRaíz 1: " + root1 + "\nRaíz 2: " + root2);
+                    }
+                } catch (NumberFormatException ex) {
+                    resultArea.setText("Por favor, ingresa valores válidos.");
+                }
+            }
+        });
+
+        frame.setVisible(true);
+    }
+}
