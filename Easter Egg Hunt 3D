@@ -1,0 +1,43 @@
+public class EasterEggHuntGame extends SimpleApplication {
+
+    private int eggsCollected = 0;
+
+    public static void main(String[] args) {
+        EasterEggHuntGame app = new EasterEggHuntGame();
+        app.start();
+    }
+
+    @Override
+    public void simpleInitApp() {
+        flyCam.setMoveSpeed(10);
+        initScene();
+        spawnEgg(new Vector3f(0, 0, -5));
+        initLighting();
+    }
+
+    private void initScene() {
+        Box ground = new Box(100, 0.1f, 100);
+        Geometry groundGeom = new Geometry("Ground", ground);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Green);
+        groundGeom.setMaterial(mat);
+        rootNode.attachChild(groundGeom);
+    }
+
+    private void spawnEgg(Vector3f location) {
+        Sphere egg = new Sphere(16, 16, 0.5f);
+        Geometry eggGeom = new Geometry("Egg", egg);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Pink);
+        eggGeom.setMaterial(mat);
+        eggGeom.setLocalTranslation(location);
+        rootNode.attachChild(eggGeom);
+    }
+
+    private void initLighting() {
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(-0.5f, -1f, -0.5f).normalizeLocal());
+        sun.setColor(ColorRGBA.White);
+        rootNode.addLight(sun);
+    }
+}
