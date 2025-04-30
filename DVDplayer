@@ -1,0 +1,59 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class DVDPlayerGUI {
+    public static void main(String[] args) {
+        // Crear la ventana principal
+        JFrame frame = new JFrame("Reproductor DVD");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new BorderLayout());
+
+        // Crear el área de visualización simulada
+        JLabel screen = new JLabel("Área de Visualización", SwingConstants.CENTER);
+        screen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        frame.add(screen, BorderLayout.CENTER);
+
+        // Crear los controles
+        JPanel controlsPanel = new JPanel();
+        controlsPanel.setLayout(new FlowLayout());
+
+        JButton playButton = new JButton("Reproducir");
+        JButton pauseButton = new JButton("Pausar");
+        JButton stopButton = new JButton("Detener");
+
+        // Agregar botones al panel de controles
+        controlsPanel.add(playButton);
+        controlsPanel.add(pauseButton);
+        controlsPanel.add(stopButton);
+
+        frame.add(controlsPanel, BorderLayout.SOUTH);
+
+        // Agregar funcionalidad básica a los botones
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                screen.setText("Reproduciendo DVD...");
+            }
+        });
+
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                screen.setText("DVD en Pausa");
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                screen.setText("DVD Detenido");
+            }
+        });
+
+        // Mostrar la ventana
+        frame.setVisible(true);
+    }
+}
