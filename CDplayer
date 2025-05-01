@@ -1,0 +1,55 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class CDPlayerGUI extends JFrame {
+    private JButton playButton;
+    private JButton stopButton;
+    private JButton ejectButton;
+
+    public CDPlayerGUI() {
+        setTitle("Reproductor de CD");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        playButton = new JButton("Reproducir");
+        stopButton = new JButton("Detener");
+        ejectButton = new JButton("Expulsar");
+
+        playButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para reproducir CD
+                JOptionPane.showMessageDialog(null, "Reproduciendo CD...");
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para detener reproducción
+                JOptionPane.showMessageDialog(null, "CD detenido.");
+            }
+        });
+
+        ejectButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para expulsar CD
+                JOptionPane.showMessageDialog(null, "CD expulsado.");
+            }
+        });
+
+        setLayout(new FlowLayout());
+        add(playButton);
+        add(stopButton);
+        add(ejectButton);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new CDPlayerGUI().setVisible(true);
+            }
+        });
+    }
+}
