@@ -1,0 +1,38 @@
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+import javafx.stage.Stage;
+
+public class TicTacToe3D extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        Group root = new Group();
+        Scene scene = new Scene(root, 600, 600, true);
+        scene.setFill(Color.LIGHTGRAY);
+
+        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera.setTranslateZ(-500);
+        scene.setCamera(camera);
+
+        // Creación de la cuadrícula con cubos
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Box box = new Box(100, 100, 10);
+                box.setTranslateX(i * 120 - 120);
+                box.setTranslateY(j * 120 - 120);
+                root.getChildren().add(box);
+            }
+        }
+
+        primaryStage.setTitle("Tic Tac Toe 3D");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
