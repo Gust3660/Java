@@ -1,0 +1,25 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.Random;
+
+public class RandomGUIApp {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Aplicación Random");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(500, 500);
+            frame.setLayout(null); // Usamos un diseño absoluto
+
+            Random random = new Random();
+
+            for (int i = 0; i < 10; i++) { // Generamos 10 botones aleatorios
+                JButton button = new JButton("Botón " + (i + 1));
+                button.setBounds(random.nextInt(400), random.nextInt(400), 100, 50);
+                button.setBackground(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                frame.add(button);
+            }
+
+            frame.setVisible(true);
+        });
+    }
+}
