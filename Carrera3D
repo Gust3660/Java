@@ -1,0 +1,47 @@
+import org.lwjgl.*;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.*;
+import org.lwjgl.system.*;
+
+import java.nio.*;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
+
+public class Carrera3D {
+    private long window;
+
+    public void run() {
+        init();
+        loop();
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
+
+    private void init() {
+        if (!glfwInit()) throw new IllegalStateException("Error al iniciar GLFW");
+
+        window = glfwCreateWindow(800, 600, "Juego de Carreras 3D", NULL, NULL);
+        if (window == NULL) throw new RuntimeException("Error al crear ventana");
+
+        glfwMakeContextCurrent(window);
+        glfwShowWindow(window);
+        GL.createCapabilities();
+    }
+
+    private void loop() {
+        while (!glfwWindowShouldClose(window)) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+    }
+
+    public static void main(String[] args) {
+        new Carrera3D().run();
+    }
+}
