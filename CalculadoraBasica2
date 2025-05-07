@@ -1,0 +1,51 @@
+import javax.swing.JOptionPane;
+
+public class Calculadora {
+    public static void main(String[] args) {
+        while (true) {
+            String[] opciones = {"Suma", "Resta", "Multiplicación", "División", "Salir"};
+            String operacion = (String) JOptionPane.showInputDialog(
+                    null, 
+                    "Seleccione una operación:", 
+                    "Calculadora", 
+                    JOptionPane.QUESTION_MESSAGE, 
+                    null, 
+                    opciones, 
+                    opciones[0]);
+
+            if (operacion == null || operacion.equals("Salir")) {
+                JOptionPane.showMessageDialog(null, "¡Hasta luego!");
+                break;
+            }
+
+            try {
+                double num1 = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el primer número:"));
+                double num2 = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el segundo número:"));
+                double resultado = 0;
+
+                switch (operacion) {
+                    case "Suma":
+                        resultado = num1 + num2;
+                        break;
+                    case "Resta":
+                        resultado = num1 - num2;
+                        break;
+                    case "Multiplicación":
+                        resultado = num1 * num2;
+                        break;
+                    case "División":
+                        if (num2 == 0) {
+                            JOptionPane.showMessageDialog(null, "Error: No se puede dividir por cero.");
+                            continue;
+                        }
+                        resultado = num1 / num2;
+                        break;
+                }
+
+                JOptionPane.showMessageDialog(null, "El resultado de " + operacion + " es: " + resultado);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error: Ingresa un número válido.");
+            }
+        }
+    }
+}
